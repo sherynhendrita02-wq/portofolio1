@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+:root {
+  --font-bebas: 'Bebas Neue', Impact, sans-serif;
+  --font-caveat: 'Caveat', cursive;
+  --font-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+@theme {
+  --font-display: var(--font-bebas);
+  --font-script: var(--font-caveat);
+  --font-sans: var(--font-jakarta);
+  --color-brand-accent: #994887;
+  --color-brand-purple: #3A004D;
+  --color-brand-midnight: #16001e;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #16001e;
+}
+::-webkit-scrollbar-thumb {
+  background: #3A004D;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #994887;
+}
+
+/* Giant Typography Background Glow */
+.hero-portfolio-text {
+  text-shadow: 0 0 90px rgba(153, 72, 135, 0.45);
+  user-select: none;
+}
+
+/* Gradient overlay for blending images */
+.hero-blend-mask {
+  mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+}
+
+/* Ambient Hero Radial Spotlights */
+.hero-spotlight {
+  background: radial-gradient(circle at 50% 28%, rgba(153, 72, 135, 0.28) 0%, rgba(58, 0, 77, 0.6) 45%, transparent 75%);
+}
+
+/* Timeline line */
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 20px;
+  width: 1px;
+  background: repeating-linear-gradient(to bottom, #5a156e 0, #5a156e 4px, transparent 4px, transparent 8px);
+  z-index: 1;
+}
+
+/* Glowing dot pulse */
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+.pulse-dot {
+  animation: pulseDot 2s infinite ease-in-out;
+}

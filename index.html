@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sheryn Febrylia Hendrita • Portfolio & Software Engineer</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Bebas Neue, Plus Jakarta Sans, Caveat, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              accent: '#994887',       /* Rose Violet / Vibrant Orchid */
+              accentLight: '#b55a9f',  /* Hover Orchid */
+              purple: '#3A004D',       /* Deep Royal Purple */
+              purpleDark: '#22002e',   /* Very Deep Purple */
+              bg: '#16001e',           /* Background Darkest */
+              card: '#22002e',
+              border: 'rgba(153, 72, 135, 0.28)'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Bebas Neue"', 'sans-serif'],
+            script: ['"Caveat"', 'cursive'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #16001e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3A004D;
+      border-radius: 4px;
+      border: 1px solid rgba(153, 72, 135, 0.4);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #994887;
+    }
+
+    /* Giant Background Outline/Solid Typography */
+    .hero-portfolio-text {
+      text-shadow: 0 0 80px rgba(153, 72, 135, 0.35);
+      letter-spacing: 0.04em;
+    }
+
+    /* Kotak hitam memudar di kaki foto.
+       - Menutup tepi bawah foto (potongan PNG) supaya tidak terlihat melayang.
+       - Sengaja turun 4rem melewati tepi foto, lalu memudar lagi ke bawah,
+         jadi tidak ada garis potong di mana pun (atas, bawah, kiri, kanan).
+       - Titik paling pekat (~97%) tepat di tepi bawah foto (23.5% dari dasar kotak). */
+    .hero-bottom-fade {
+      position: absolute;
+      z-index: 20;
+      left: 50%;
+      bottom: -4rem;
+      width: 190%;
+      height: 17rem;
+      transform: translateX(-50%);
+      background: linear-gradient(
+        to top,
+        rgba(10, 0, 16, 0) 0%,
+        rgba(10, 0, 16, 0.55) 10%,
+        rgba(10, 0, 16, 0.9) 18%,
+        rgba(10, 0, 16, 0.97) 23.5%,
+        rgba(10, 0, 16, 0.9) 36%,
+        rgba(10, 0, 16, 0.6) 52%,
+        rgba(10, 0, 16, 0.28) 70%,
+        rgba(10, 0, 16, 0.08) 86%,
+        rgba(10, 0, 16, 0) 100%
+      );
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* Ambient Hero Radial Spotlights */
+    .hero-spotlight {
+      background: radial-gradient(circle at 50% 28%, rgba(153, 72, 135, 0.28) 0%, rgba(58, 0, 77, 0.6) 45%, transparent 75%);
+    }
+
+    /* Glass Effect with Dark Purple Tone */
+    .glass-card {
+      background: rgba(44, 0, 59, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(153, 72, 135, 0.25);
+    }
+    .glass-card:hover {
+      border-color: rgba(153, 72, 135, 0.6);
+      box-shadow: 0 12px 35px rgba(153, 72, 135, 0.18);
+    }
+
+    /* Glowing dot pulse */
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+    .pulse-dot {
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    /* Card Hover Glow */
+    .project-card-interactive {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card-interactive:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 45px rgba(153, 72, 135, 0.25);
+      border-color: #994887;
+    }
+
+    /* Modal Animation */
+    .modal-enter {
+      animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .tech-marquee {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tech-marquee::-webkit-scrollbar {
+      display: none;
+    }
+    .tech-marquee-track {
+      display: flex;
+      width: max-content;
+    }
+    .tech-marquee.is-ready {
+      overflow: hidden;
+    }
+    .tech-marquee.is-ready .tech-marquee-track {
+      animation: techMarquee 32s linear infinite;
+    }
+    .tech-marquee-group {
+      display: flex;
+      flex: none;
+      gap: 1rem;
+      padding-right: 1rem;
+    }
+    .tech-card {
+      flex: 0 0 clamp(120px, calc((100vw - 16rem) / 8), 144px);
+    }
+    .tech-marquee.is-ready:hover .tech-marquee-track,
+    .tech-marquee.is-ready:focus-within .tech-marquee-track {
+      animation-play-state: paused;
+    }
+    @keyframes techMarquee {
+      to { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tech-marquee,
+      .tech-marquee.is-ready {
+        overflow-x: auto;
+      }
+      .tech-marquee-track {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#16001e] text-white font-sans antialiased selection:bg-[#994887] selection:text-white relative overflow-x-hidden min-h-screen">
+
+  <!-- ================= TOP STATUS TICKER BAR ================= -->
+  <div class="bg-gradient-to-r from-[#22002e] via-[#3A004D] to-[#22002e] border-b border-[#994887]/30 py-1.5 px-4 text-center overflow-hidden">
+    <div class="max-w-7xl mx-auto flex items-center justify-between text-[11px] text-zinc-300">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="text-zinc-200 font-medium">TEKNIK INFORMATIKA • POLITEKNIK NEGERI JEMBER (IPK: 3.75/4.00)</span>
+      </div>
+      <div class="hidden md:flex items-center gap-4 text-zinc-300">
+        <span>📍 NGANJUK, JAWA TIMUR</span>
+        <span class="text-[#994887]">•</span>
+        <span class="text-[#b55a9f] font-mono">OPEN FOR INTERNSHIP & PROJECTS</span>
+      </div>
+      <div class="flex items-center gap-2 text-zinc-300">
+        <span>WHATSAPP:</span>
+        <a href="https://wa.me/6285604424629" target="_blank" class="text-white font-semibold hover:text-[#b55a9f] transition-colors">+62 856 0442 4629</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= NAVBAR WITH CENTERED PILL ================= -->
+  <header class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between text-xs tracking-wider z-50 relative">
+    
+    <!-- Left: Identity Logo -->
+    <a href="#" class="flex flex-col uppercase group shrink-0">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 bg-[#994887] rounded-sm rotate-45 group-hover:rotate-90 transition-transform"></span>
+        <span class="text-white font-black text-sm tracking-widest font-display">SHERYN<span class="text-[#994887]">.DEV</span></span>
+      </div>
+      <span class="text-[10px] text-zinc-400 tracking-wider">SOFTWARE ENGINEER & WEB DEV</span>
+    </a>
+
+    <!-- Center: Centered Navigation Pill -->
+    <nav class="hidden lg:flex items-center gap-1 sm:gap-2 text-[11px] uppercase tracking-widest bg-[#2c003b]/85 border border-[#994887]/30 px-6 py-2 rounded-full backdrop-blur-md mx-auto shadow-lg shadow-[#16001e]/60">
+      <a href="#projects" class="px-3 py-1 rounded-full text-zinc-300 hover:text-white hover:bg-[#994887]/20 transition-all">Projects</a>
+      <a href="#tech-stack" class="px-3 py-1 rounded-full text-zinc-300 hover:text-white hover:bg-[#994887]/20 transition-all">Dev Toolkit</a>
+      <a href="#kepanitiaan" class="px-3 py-1 rounded-full text-zinc-300 hover:text-white hover:bg-[#994887]/20 transition-all">Kepanitiaan</a>
+      <a href="#education" class="px-3 py-1 rounded-full text-zinc-300 hover:text-white hover:bg-[#994887]/20 transition-all">Pendidikan & Skills</a>
+      <a href="#contact" class="px-3 py-1 rounded-full text-zinc-300 hover:text-white hover:bg-[#994887]/20 transition-all">Contact</a>
+    </nav>
+
+    <!-- Right: Available & Contact Button -->
+    <button 
+      onclick="openContactModal()" 
+      class="flex items-center gap-2 px-4 py-2 rounded-full border border-[#994887]/60 bg-[#3A004D]/60 hover:bg-[#994887] hover:border-[#994887] text-white transition-all duration-300 group shadow-lg shadow-[#3A004D]/30 shrink-0 cursor-pointer"
+    >
+      <span class="text-zinc-200 uppercase font-semibold text-[11px] tracking-wider group-hover:text-white transition-colors">
+        HUBUNGI SAYA
+      </span>
+      <span class="text-[#994887] group-hover:text-white text-xs font-bold pulse-dot">✦</span>
+    </button>
+  </header>
+
+  <!-- ================= HERO SECTION (EDITORIAL MAGAZINE STYLE) ================= -->
+  <section class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 overflow-hidden min-h-[640px] md:min-h-[720px] flex flex-col justify-between">
+    
+    <!-- Background Ambient Spotlight -->
+    <div class="absolute inset-0 hero-spotlight pointer-events-none z-0"></div>
+
+    <!-- GIANT BACKGROUND "PORTFOLIO" TYPOGRAPHY (#994887) -->
+    <div class="absolute top-2 left-0 right-0 w-full flex justify-center pointer-events-none z-[1] overflow-hidden">
+      <h2 class="hero-portfolio-text font-display text-[19vw] leading-none tracking-tight text-[#994887] font-black opacity-85 select-none whitespace-nowrap uppercase">
+        PORTFOLIO
+      </h2>
+    </div>
+
+    <!-- MAIN HERO CONTENT GRID -->
+    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-8 md:pt-14">
+      
+      <!-- LEFT COLUMN: Intro, Name, Bio (from CV) -->
+      <div class="lg:col-span-4 flex flex-col justify-center order-2 lg:order-1 text-left">
+        
+        <div class="flex items-center gap-3 mb-1">
+          <span class="font-script text-3xl sm:text-4xl text-zinc-200 tracking-wide select-none">
+            Hello, I'm
+          </span>
+          <span class="text-[10px] bg-[#3A004D]/80 border border-[#994887]/50 text-[#b55a9f] font-mono px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+            POLIJE • TIF
+          </span>
+        </div>
+
+        <!-- Giant Name: SHERYN FEBRYLIA HENDRITA -->
+        <h1 class="font-display font-black uppercase tracking-tight text-white leading-[0.88] drop-shadow-md">
+          <span class="text-6xl sm:text-7xl xl:text-8xl block">SHERYN</span>
+          <span class="text-3xl sm:text-4xl xl:text-5xl tracking-normal text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-[#b55a9f] block mt-1">FEBRYLIA HENDRITA</span>
+        </h1>
+
+        <!-- Role Subtitle in #994887 -->
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <p class="text-[#b55a9f] font-bold text-xs sm:text-sm tracking-widest uppercase">
+            SOFTWARE ENGINEER & WEB DEVELOPER
+          </p>
+        </div>
+
+        <!-- Bio Paragraph (From Sheryn's CV) -->
+        <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed mt-3 max-w-sm font-normal">
+          Mahasiswa semester 3 Teknik Informatika di Politeknik Negeri Jember yang berfokus pada pengembangan perangkat lunak dan aplikasi web. Berpengalaman membangun sistem dengan PHP, MySQL, HTML, CSS, Java, RESTful API, dan MVC.
+        </p>
+
+        <!-- Quick Action Buttons -->
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#994887]/50 bg-[#3A004D]/60 text-zinc-200 text-[11px] tracking-wider uppercase font-medium">
+            <svg class="w-3.5 h-3.5 text-[#994887]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke-width="1.8"></circle>
+              <path stroke-linecap="round" stroke-width="1.8" d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span>NGANJUK, ID</span>
+          </div>
+
+          <a href="#projects" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#994887] hover:bg-[#b55a9f] text-white text-[11px] font-bold uppercase tracking-wider transition-all shadow-md shadow-[#3A004D]/40">
+            <span>Buka Website Project ⟶</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- CENTER COLUMN: Editorial Portrait of Sheryn -->
+      <div class="lg:col-span-5 flex justify-center items-end relative order-1 lg:order-2 h-[400px] sm:h-[490px] lg:h-[590px]">
+        <!-- Circular purple backlight ring: #3A004D & #994887 -->
+        <div class="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-[#994887]/30 blur-3xl -z-10 top-12 left-1/2 -translate-x-1/2"></div>
+        <div class="absolute w-80 h-80 sm:w-[420px] sm:h-[420px] rounded-full bg-[#3A004D]/50 blur-2xl -z-20 top-8 left-1/2 -translate-x-1/2"></div>
+        
+        <!-- Portrait Image -->
+        <div class="relative w-full h-full max-w-md mx-auto flex items-end justify-center">
+          <div aria-hidden="true" class="hero-bottom-fade"></div>
+          <img 
+            id="hero-image"
+            src="sheryn.png" 
+            alt="Sheryn Febrylia Hendrita" 
+            class="relative z-10 object-contain object-bottom h-[92%] sm:h-[96%] w-auto max-w-full transition-transform duration-500 hover:scale-[1.02]"
+          >
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Pitch Statement & Academic / Project Metrics -->
+      <div class="lg:col-span-3 flex flex-col justify-between items-start lg:items-end gap-8 order-3 text-left lg:text-right h-full py-4">
+        
+        <!-- Pitch Statement -->
+        <div class="flex items-start lg:items-center gap-3 lg:flex-row-reverse max-w-[220px]">
+          <div class="w-8 h-8 rounded-full bg-[#3A004D] border border-[#994887]/50 flex items-center justify-center shrink-0 text-[#b55a9f] text-xs">
+            ✦
+          </div>
+          <p class="text-zinc-300 text-xs leading-snug">
+            Membangun aplikasi web fungsional, performa tinggi, dan mudah digunakan.
+          </p>
+        </div>
+
+        <!-- Vertical Metrics List (Aksen Warna: #994887) -->
+        <div class="flex flex-col gap-5 w-full sm:w-auto">
+          <!-- Metric 1: IPK -->
+          <div class="flex items-baseline gap-3 lg:justify-end">
+            <span class="font-display text-4xl sm:text-5xl font-bold text-[#b55a9f] tracking-tight">3.75</span>
+            <div class="text-[10px] sm:text-[11px] uppercase tracking-wider text-zinc-300 font-medium text-left leading-tight">
+              IPK MAHASISWA<br><span class="text-zinc-400">POLIJE (SKALA 4.00)</span>
+            </div>
+          </div>
+
+          <!-- Metric 2: Semester -->
+          <div class="flex items-baseline gap-3 lg:justify-end">
+            <span class="font-display text-4xl sm:text-5xl font-bold text-[#b55a9f] tracking-tight">SEM 3</span>
+            <div class="text-[10px] sm:text-[11px] uppercase tracking-wider text-zinc-300 font-medium text-left leading-tight">
+              TEKNIK INFORMATIKA<br><span class="text-zinc-400">AKTIF KULIAH</span>
+            </div>
+          </div>
+
+          <!-- Metric 3: Kepanitiaan -->
+          <div class="flex items-baseline gap-3 lg:justify-end">
+            <span class="font-display text-4xl sm:text-5xl font-bold text-[#b55a9f] tracking-tight">5+</span>
+            <div class="text-[10px] sm:text-[11px] uppercase tracking-wider text-zinc-300 font-medium text-left leading-tight">
+              KEPANITIAAN &<br><span class="text-zinc-400">ORGANISASI KAMPUS</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= DEV TOOLKIT & BAHASA PEMROGRAMAN (FROM CV) ================= -->
+  <section id="tech-stack" class="w-full py-12 border-y border-[#3A004D] bg-[#20002b] relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3A004D] border border-[#994887]/40 text-[#b55a9f] text-xs font-semibold uppercase tracking-widest mb-2">
+        <span>KEAHLIAN TEKNIS & TOOLS</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wider text-white">
+        Bahasa, Basis Data & Tools Pengembangan
+      </h2>
+      <p class="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto mt-2">
+        Teknologi yang dikuasai dan digunakan dalam pengerjaan proyek sistem informasi, front-end web, database management, dan pengujian API.
+      </p>
+    </div>
+
+    <!-- Tech Grid based on CV -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="tech-marquee" aria-label="Daftar keahlian teknis dan tools">
+        <div class="tech-marquee-track">
+          <div class="tech-marquee-group">
+        
+        <!-- PHP -->
+        <div class="tech-card flex flex-col items-center justify-center p-4 rounded-2xl bg-[#2b0038] border border-[#3A004D] hover:border-[#994887]/70 transition-all duration-300 group hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-[#777BB4]/20 border border-[#777BB4]/40 flex items-center justify-center font-bold text-sm mb-2 text-[#9da1db] shadow-md group-hover:scale-110 transition-transform">
+            PHP
+          </div>
+          <span class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">PHP</span>
+          <span class="text-[10px] text-zinc-400">Backend & MVC</span>
+        </div>
+
+        <!-- MySQL -->
+        <div class="tech-card flex flex-col items-center justify-center p-4 rounded-2xl bg-[#2b0038] border border-[#3A004D] hover:border-[#994887]/70 transition-all duration-300 group hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-[#00758F]/20 border border-[#00758F]/40 flex items-center justify-center font-bold text-xs mb-2 text-[#00a8cc] shadow-md group-hover:scale-110 transition-transform">
+            SQL
+          </div>
+          <span class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">MySQL</span>
+          <span class="text-[10px] text-zinc-400">Basis Data & CRUD</span>
+        </div>
+
+        <!-- HTML5 -->
+        <div class="tech-card flex flex-col items-center justify-center p-4 rounded-2xl bg-[#2b0038] border border-[#3A004D] hover:border-[#994887]/70 transition-all duration-300 group hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-[#E34F26]/20 border border-[#E34F26]/40 flex items-center justify-center font-bold text-xs mb-2 text-[#ff6a42] shadow-md group-hover:scale-110 transition-transform">
+            &lt;/&gt;
+          </div>
+          <span class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">HTML5 & CSS3</span>
+          <span class="text-[10px] text-zinc-400">Struktur & Styling</span>
+        </div>
+
+        <!-- Java -->
+        <div class="tech-card flex flex-col items-center justify-center p-4 rounded-2xl bg-[#2b0038] border border-[#3A004D] hover:border-[#994887]/70 transition-all duration-300 group hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-[#ED8B00]/20 border border-[#ED8B00]/40 flex items-center justify-center font-bold text-xs mb-2 text-[#ffa726] shadow-md group-hover:scale-110 transition-transform">
+            JAVA
+          </div>
+          <span class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">Java</span>
+          <span class="text-[10px] text-zinc-400">OOP & Software</span>
+        </div>
+
+        <!-- Postman -->
+        <div class="tech-card flex flex-col items-center justify-center p-4 rounded-2xl bg-[#2b0038] border border-[#3A004D] hover:border-[#994887]/70 transition-all duration-300 group hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-[#FF6C37]/20 border border-[#FF6C37]/40 flex items-center justify-center font-bold text-xs mb-2 text-[#ff8f66] shadow-md group-hover:scale-110 transition-transform">
+            API
+          </div>
+          <span class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">Postman</span>
+          <span class="text-[10px] text-zinc-400">RESTful API Test</span>
+        </div>
+
+        <!-- Git & GitHub -->
+        <div class="tech-card flex flex-col items-center justify-center p-4 rounded-2xl bg-[#2b0038] border border-[#3A004D] hover:border-[#994887]/70 transition-all duration-300 group hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-[#F05032]/20 border border-[#F05032]/40 flex items-center justify-center font-bold text-xs mb-2 text-[#ff7961] shadow-md group-hover:scale-110 transition-transform">
+            GIT
+          </div>
+          <span class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">Git & GitHub</span>
+          <span class="text-[10px] text-zinc-400">Version Control</span>
+        </div>
+
+        <!-- VS Code -->
+        <div class="tech-card flex flex-col items-center justify-center p-4 rounded-2xl bg-[#2b0038] border border-[#3A004D] hover:border-[#994887]/70 transition-all duration-300 group hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-[#007ACC]/20 border border-[#007ACC]/40 flex items-center justify-center font-bold text-xs mb-2 text-[#38bdf8] shadow-md group-hover:scale-110 transition-transform">
+            VSC
+          </div>
+          <span class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">VS Code</span>
+          <span class="text-[10px] text-zinc-400">Code Editor</span>
+        </div>
+
+        <!-- RESTful API / MVC -->
+        <div class="tech-card flex flex-col items-center justify-center p-4 rounded-2xl bg-[#2b0038] border border-[#3A004D] hover:border-[#994887]/70 transition-all duration-300 group hover:-translate-y-1">
+          <div class="w-12 h-12 rounded-xl bg-[#994887]/20 border border-[#994887]/40 flex items-center justify-center font-bold text-xs mb-2 text-[#b55a9f] shadow-md group-hover:scale-110 transition-transform">
+            REST
+          </div>
+          <span class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">RESTful API</span>
+          <span class="text-[10px] text-zinc-400">CRUD & Endpoints</span>
+        </div>
+
+      </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      (() => {
+        const techMarqueeTrack = document.querySelector('.tech-marquee-track');
+        const techMarqueeGroup = techMarqueeTrack?.querySelector('.tech-marquee-group');
+        if (techMarqueeTrack && techMarqueeGroup) {
+          const duplicateTechCards = techMarqueeGroup.cloneNode(true);
+          duplicateTechCards.setAttribute('aria-hidden', 'true');
+          techMarqueeTrack.appendChild(duplicateTechCards);
+          techMarqueeTrack.parentElement.classList.add('is-ready');
+        }
+      })();
+    </script>
+  </section>
+
+  <!-- ================= SELECTED PROJECTS (CARD DENGAN FITUR KLIK MUNCUL WEBSITE) ================= -->
+  <section id="projects" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    
+    <!-- Section Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3A004D] border border-[#994887]/40 text-[#b55a9f] text-xs font-semibold uppercase tracking-widest mb-2">
+          <span>PROJECT PORTFOLIO • KLIK KARTU UNTUK BUKA WEBSITE</span>
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-bold uppercase tracking-wider text-white">
+          PROJECT & PENGEMBANGAN WEBSITE
+        </h2>
+        <p class="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
+          Tekan salah satu card project di bawah untuk langsung membuka dan mencoba tampilan website interaktifnya di jendela browser!
+        </p>
+      </div>
+
+      <!-- Live Preview Badge Indicator -->
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#994887]/20 border border-[#994887]/40 text-[#b55a9f] text-xs font-semibold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          Live Interactive Website Viewer
+        </span>
+      </div>
+    </div>
+
+    <!-- Project Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- PROJECT CARD 1: WEBSITE PAK TO BARBER -->
+      <div 
+        onclick="window.open('https://pameran-jti.polije.ac.id/product/423/pak-to-barbershop-sistem-reservasi-manajemen-umkm-digital', '_blank', 'noopener,noreferrer')"
+        class="project-card-interactive group cursor-pointer relative flex flex-col bg-[#22002e] border border-[#3A004D] rounded-2xl overflow-hidden hover:border-[#994887] transition-all duration-300"
+      >
+        <!-- Mockup Visual Header -->
+        <div class="relative h-64 w-full overflow-hidden bg-gradient-to-b from-[#2d003b] to-[#120018] p-4 flex flex-col justify-between">
+          <!-- Ambient Background Grid Pattern -->
+          <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#994887_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+          <!-- Card Header Badges -->
+          <div class="relative z-10 flex items-center justify-between">
+            <span class="bg-[#16001e]/85 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] text-zinc-300 font-mono border border-[#994887]/40">
+              Sep 2025 – Des 2025
+            </span>
+            <span class="bg-[#994887] text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+              Front-End
+            </span>
+          </div>
+
+          <!-- Project Brand Graphic -->
+          <div class="relative z-10 text-center my-auto">
+            <div class="w-16 h-16 mx-auto mb-2 rounded-full border-2 border-[#994887] overflow-hidden shadow-lg shadow-[#3A004D]/60 group-hover:scale-110 transition-transform">
+              <img src="pak-to-logo.png" alt="Logo Potong Rambut Pak To" class="w-full h-full object-cover" loading="lazy">
+            </div>
+            <h3 class="font-display text-3xl font-black text-white tracking-wider uppercase group-hover:text-[#b55a9f] transition-colors">
+              PAK TO BARBER
+            </h3>
+            <p class="text-[11px] text-zinc-300 font-mono tracking-widest uppercase">
+              BARBERSHOP ONLINE BOOKING WEB
+            </p>
+          </div>
+
+          <!-- Bottom Action Hint -->
+          <div class="relative z-10 flex items-center justify-between text-[11px] text-zinc-400 pt-2 border-t border-[#3A004D]/60">
+            <span class="flex items-center gap-1.5 text-[#b55a9f] font-semibold">
+              <span>Lihat di Pameran JTI</span> ⟶
+            </span>
+            <span class="text-zinc-400 font-mono text-[10px]">HTML • CSS • JS</span>
+          </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="p-5 flex flex-col justify-between flex-1 bg-[#1d0027] border-t border-[#3A004D]">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-display text-2xl font-bold text-[#b55a9f]">01</span>
+              <span class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold bg-[#2b0038] px-2.5 py-0.5 rounded-full border border-[#3A004D]">
+                Front-End Developer
+              </span>
+            </div>
+            <h4 class="text-sm font-bold text-white group-hover:text-[#b55a9f] transition-colors mb-2">
+              Pengembangan Website Pak To Barber
+            </h4>
+            <p class="text-xs text-zinc-300 leading-relaxed mb-4">
+              Mengerjakan seluruh antarmuka dan navigasi website Pak To Barber. Dilengkapi katalog servis cukur, daftar harga, galeri gaya rambut, serta formulir pemesanan jadwal cukur online.
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-[#3A004D] flex items-center justify-between">
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3A004D] text-zinc-300">HTML5</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3A004D] text-zinc-300">CSS3</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3A004D] text-zinc-300">JavaScript</span>
+            </div>
+            <button class="w-8 h-8 rounded-full bg-[#3A004D] border border-[#994887]/60 flex items-center justify-center text-white group-hover:bg-[#994887] group-hover:scale-105 transition-all">
+              ↗
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT CARD 2: EXOTIC GAMING & CAFE -->
+      <div 
+        onclick="window.open('https://pameran-jti.polije.ac.id/product/642/exotic-gaming-and-cafe', '_blank', 'noopener,noreferrer')"
+        class="project-card-interactive group cursor-pointer relative flex flex-col bg-[#22002e] border border-[#3A004D] rounded-2xl overflow-hidden hover:border-[#994887] transition-all duration-300"
+      >
+        <!-- Mockup Visual Header -->
+        <div class="relative h-64 w-full overflow-hidden bg-gradient-to-b from-[#2d003b] to-[#120018] p-4 flex flex-col justify-between">
+          <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#994887_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+          <div class="relative z-10 flex items-center justify-between">
+            <span class="bg-[#16001e]/85 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] text-zinc-300 font-mono border border-[#994887]/40">
+              Jan 2026 – Apr 2026
+            </span>
+            <span class="bg-[#994887] text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+              Software Eng.
+            </span>
+          </div>
+
+          <div class="relative z-10 text-center my-auto">
+            <div class="w-16 h-16 mx-auto mb-2 rounded-full border-2 border-[#994887] overflow-hidden shadow-lg shadow-[#3A004D]/60 group-hover:scale-110 transition-transform">
+              <img src="exotic-logo.png" alt="Logo Exotic Gaming & Cafe" class="w-full h-full object-cover" loading="lazy">
+            </div>
+            <h3 class="font-display text-3xl font-black text-white tracking-wider uppercase group-hover:text-[#b55a9f] transition-colors">
+              EXOTIC GAMING & CAFE
+            </h3>
+            <p class="text-[11px] text-zinc-300 font-mono tracking-widest uppercase">
+              MOBILE APP OPERASIONAL CAFE
+            </p>
+          </div>
+
+          <div class="relative z-10 flex items-center justify-between text-[11px] text-zinc-400 pt-2 border-t border-[#3A004D]/60">
+            <span class="flex items-center gap-1.5 text-[#b55a9f] font-semibold">
+              <span>Lihat di Pameran JTI</span> ⟶
+            </span>
+            <span class="text-zinc-400 font-mono text-[10px]">Flutter • Firebase • Firestore</span>
+          </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="p-5 flex flex-col justify-between flex-1 bg-[#1d0027] border-t border-[#3A004D]">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-display text-2xl font-bold text-[#b55a9f]">02</span>
+              <span class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold bg-[#2b0038] px-2.5 py-0.5 rounded-full border border-[#3A004D]">
+                Software Engineer
+              </span>
+            </div>
+            <h4 class="text-sm font-bold text-white group-hover:text-[#b55a9f] transition-colors mb-2">
+              Sistem Operasional Exotic Gaming & Cafe
+            </h4>
+            <p class="text-xs text-zinc-300 leading-relaxed mb-4">
+              Aplikasi mobile Android untuk operasional cafe dan gaming center, dipakai owner dan karyawan: absensi, manajemen stok, pengumuman, rekap pendapatan dan absensi, serta pencatatan transaksi kasir dengan sinkronisasi real-time Cloud Firestore. Dikerjakan bersama tim ExcRush.
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-[#3A004D] flex items-center justify-between">
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3A004D] text-zinc-300">Flutter</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3A004D] text-zinc-300">Firebase</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#3A004D] text-zinc-300">Firestore</span>
+            </div>
+            <button class="w-8 h-8 rounded-full bg-[#3A004D] border border-[#994887]/60 flex items-center justify-center text-white group-hover:bg-[#994887] group-hover:scale-105 transition-all">
+              ↗
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= PENGALAMAN KEPANITIAAN & ORGANISASI (DARI CV) ================= -->
+  <section id="kepanitiaan" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#3A004D]">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3A004D] border border-[#994887]/40 text-[#b55a9f] text-xs font-semibold uppercase tracking-widest mb-2">
+          <span>LEADERSHIP & KEPANITIAAN</span>
+        </div>
+        <h2 class="text-xl sm:text-3xl font-bold uppercase tracking-wider text-white">
+          REKAM JEJAK KEPANITIAAN & ORGANISASI
+        </h2>
+        <p class="text-xs sm:text-sm text-zinc-400 mt-2 max-w-xl">
+          Pengalaman berorganisasi dan kontribusi dalam berbagai event kampus Teknik Informatika Politeknik Negeri Jember.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs text-zinc-400">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#994887]"></span>
+        <span>5 Peran Organisasi & Kepanitiaan</span>
+      </div>
+    </div>
+
+    <!-- Kepanitiaan Grid Cards based on Sheryn's CV -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- 1. Makrab TIF 2026 -->
+      <div class="glass-card p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-[#994887]/15 rounded-full blur-2xl group-hover:bg-[#994887]/25 transition-all"></div>
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="text-[#b55a9f] font-mono text-xs font-bold uppercase tracking-wider bg-[#3A004D] px-3 py-1 rounded-full border border-[#994887]/40">
+              SEKSI PERLENGKAPAN
+            </span>
+            <span class="text-zinc-400 font-mono text-xs">2026</span>
+          </div>
+          
+          <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-[#b55a9f] transition-colors">
+            Malam Keakraban (Makrab) TIF 2026
+          </h3>
+          <p class="text-xs text-zinc-400 font-medium mb-4">Teknik Informatika — Politeknik Negeri Jember</p>
+          
+          <ul class="space-y-2 text-xs text-zinc-300 leading-relaxed list-disc list-inside">
+            <li>Bertugas menyiapkan dan mengelola perlengkapan kegiatan Malam Keakraban (Makrab) TIF 2026.</li>
+            <li>Berkoordinasi dengan seksi lain agar kebutuhan perlengkapan terpenuhi selama kegiatan berlangsung.</li>
+            <li>Mengembangkan kemampuan kerja sama tim, tanggung jawab, dan ketelitian dalam persiapan acara.</li>
+          </ul>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-[#3A004D] flex items-center justify-between text-[11px] text-zinc-400">
+          <span class="font-mono text-zinc-500">Fokus: Logistik & Perlengkapan</span>
+          <span class="text-[#b55a9f] font-semibold">TIF 2026</span>
+        </div>
+      </div>
+
+      <!-- 2. TIF Exhibition 2026 -->
+      <div class="glass-card p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-[#994887]/15 rounded-full blur-2xl group-hover:bg-[#994887]/25 transition-all"></div>
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="text-[#b55a9f] font-mono text-xs font-bold uppercase tracking-wider bg-[#3A004D] px-3 py-1 rounded-full border border-[#994887]/40">
+              SEKSI ACARA
+            </span>
+            <span class="text-zinc-400 font-mono text-xs">2026</span>
+          </div>
+          
+          <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-[#b55a9f] transition-colors">
+            TIF Exhibition 2026
+          </h3>
+          <p class="text-xs text-zinc-400 font-medium mb-4">Pameran Karya Inovasi Teknologi Mahasiswa TIF Polije</p>
+          
+          <ul class="space-y-2 text-xs text-zinc-300 leading-relaxed list-disc list-inside">
+            <li>Berperan dalam menyusun rangkaian dan alur acara TIF Exhibition 2026.</li>
+            <li>Mendukung pelaksanaan acara agar berjalan sesuai rencana bersama panitia dan seksi lainnya.</li>
+            <li>Mengembangkan kemampuan komunikasi, koordinasi, dan pengelolaan waktu dalam kegiatan.</li>
+          </ul>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-[#3A004D] flex items-center justify-between text-[11px] text-zinc-400">
+          <span class="font-mono text-zinc-500">Fokus: Rundown & Stage Management</span>
+          <span class="text-[#b55a9f] font-semibold">Acara Pameran</span>
+        </div>
+      </div>
+
+      <!-- 3. Sosialisasi PKM 2026 -->
+      <div class="glass-card p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-[#994887]/15 rounded-full blur-2xl group-hover:bg-[#994887]/25 transition-all"></div>
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="text-[#b55a9f] font-mono text-xs font-bold uppercase tracking-wider bg-[#3A004D] px-3 py-1 rounded-full border border-[#994887]/40">
+              SEKSI PERLENGKAPAN
+            </span>
+            <span class="text-zinc-400 font-mono text-xs">2026</span>
+          </div>
+          
+          <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-[#b55a9f] transition-colors">
+            Sosialisasi PKM 2026
+          </h3>
+          <p class="text-xs text-zinc-400 font-medium mb-4">Program Kreativitas Mahasiswa — Polije</p>
+          
+          <ul class="space-y-2 text-xs text-zinc-300 leading-relaxed list-disc list-inside">
+            <li>Bertugas menyiapkan perlengkapan kegiatan Sosialisasi Program Kreativitas Mahasiswa (PKM) 2026.</li>
+            <li>Berkoordinasi dengan panitia lain untuk mendukung kelancaran kegiatan sosialisasi.</li>
+            <li>Mengembangkan kemampuan kerja sama tim, inisiatif, dan tanggung jawab dalam kepanitiaan.</li>
+          </ul>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-[#3A004D] flex items-center justify-between text-[11px] text-zinc-400">
+          <span class="font-mono text-zinc-500">Fokus: Fasilitas & Kesiapan Acara</span>
+          <span class="text-[#b55a9f] font-semibold">Sosialisasi PKM</span>
+        </div>
+      </div>
+
+      <!-- 4. Informatics Community -->
+      <div class="glass-card p-6 sm:p-7 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-[#994887]/15 rounded-full blur-2xl group-hover:bg-[#994887]/25 transition-all"></div>
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="text-[#b55a9f] font-mono text-xs font-bold uppercase tracking-wider bg-[#3A004D] px-3 py-1 rounded-full border border-[#994887]/40">
+              DIVISI ADVOKESMA
+            </span>
+            <span class="text-zinc-400 font-mono text-xs">2025 — Sekarang</span>
+          </div>
+          
+          <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-[#b55a9f] transition-colors">
+            Informatics Community (Politeknik Negeri Jember)
+          </h3>
+          <p class="text-xs text-zinc-400 font-medium mb-4">Organisasi Kemahasiswaan Bidang Informatika</p>
+          
+          <ul class="space-y-2 text-xs text-zinc-300 leading-relaxed list-disc list-inside">
+            <li>Berpartisipasi aktif dalam kegiatan dan program kerja Divisi Advokesma di Informatics Community.</li>
+            <li>Berkontribusi dalam pelaksanaan kegiatan organisasi sesuai tugas dan tanggung jawab divisi.</li>
+            <li>Mengembangkan kemampuan komunikasi, kerja sama tim, dan kepedulian terhadap lingkungan mahasiswa.</li>
+          </ul>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-[#3A004D] flex items-center justify-between text-[11px] text-zinc-400">
+          <span class="font-mono text-zinc-500">Peran: Anggota Divisi Advokesma</span>
+          <span class="text-[#b55a9f] font-semibold">Aktif</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 3-COLUMN SECTION: PENDIDIKAN & SKILLS | WORK PROCESS | SERTIFIKASI ================= -->
+  <section id="education" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#3A004D]">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      
+      <!-- COLUMN 1: PENDIDIKAN & MATA KULIAH RELEVAN (5 Cols) -->
+      <div class="lg:col-span-5 flex flex-col justify-between glass-card rounded-3xl p-6 sm:p-7">
+        <div>
+          <h2 class="text-sm font-bold uppercase tracking-widest text-white mb-6 flex items-center gap-2">
+            <span>RIWAYAT PENDIDIKAN</span>
+          </h2>
+
+          <!-- PENDIDIKAN TINGGI -->
+          <div class="mb-6 p-4 rounded-2xl bg-[#3A004D]/40 border border-[#994887]/30">
+            <div class="flex items-start justify-between gap-3 text-xs mb-1">
+              <div>
+                <h4 class="font-bold text-white text-sm">Politeknik Negeri Jember</h4>
+                <p class="text-[#b55a9f] font-medium text-xs">Teknik Informatika — Diploma / Sarjana Terapan</p>
+              </div>
+              <span class="text-zinc-400 font-mono text-[11px] shrink-0">2025 — Sekarang</span>
+            </div>
+            <div class="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#994887]/30 text-white text-[11px] font-bold">
+              <span>🌟 IPK: 3.65 / 4.00</span>
+            </div>
+
+            <!-- Mata Kuliah Relevan -->
+            <div class="mt-3 pt-3 border-t border-[#3A004D]">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-2">Mata Kuliah Relevan:</span>
+              <div class="flex flex-wrap gap-1 text-[9px] text-zinc-300">
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Logika & Algoritma</span>
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Struktur Data</span>
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Konsep Basis Data</span>
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Teknologi Basis Data</span>
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Sistem Informasi Web Client</span>
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Sistem Informasi Web Server</span>
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Interaksi Manusia & Komputer</span>
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Software Quality Assurance</span>
+                <span class="px-2 py-0.5 rounded bg-[#22002e] border border-[#3A004D]">Manajemen Proyek</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PENDIDIKAN MENENGAH -->
+          <div class="p-4 rounded-2xl bg-[#3A004D]/20 border border-[#3A004D]">
+            <div class="flex items-start justify-between gap-3 text-xs">
+              <div>
+                <h4 class="font-bold text-white text-xs">SMA Negeri 1 Gondang</h4>
+                <p class="text-zinc-400 text-[11px]">Paket 2 (Nilai Akhir: 86,60)</p>
+                <p class="text-[10px] text-zinc-500 mt-0.5">Pelajaran Utama: Informatika, Kimia, B. Inggris Tingkat Lanjut, Fisika</p>
+              </div>
+              <span class="text-zinc-400 font-mono text-[11px] shrink-0">2022 — 2025</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOFT SKILLS BADGES -->
+        <div class="mt-6 pt-4 border-t border-[#3A004D]">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-[#b55a9f] mb-3">
+            SOFT SKILLS & KARAKTER KERJA
+          </h3>
+          <div class="flex flex-wrap gap-1.5 text-[10px] font-medium">
+            <span class="px-2.5 py-1 rounded-lg bg-[#3A004D] text-zinc-200">Kerja Sama Tim</span>
+            <span class="px-2.5 py-1 rounded-lg bg-[#3A004D] text-zinc-200">Pemecahan Masalah</span>
+            <span class="px-2.5 py-1 rounded-lg bg-[#3A004D] text-zinc-200">Komunikasi Efektif</span>
+            <span class="px-2.5 py-1 rounded-lg bg-[#3A004D] text-zinc-200">Berpikir Kritis</span>
+            <span class="px-2.5 py-1 rounded-lg bg-[#3A004D] text-zinc-200">Manajemen Waktu</span>
+            <span class="px-2.5 py-1 rounded-lg bg-[#3A004D] text-zinc-200">Kemauan Belajar Hal Baru</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 2: WORK PROCESS / METODOLOGI (4 Cols) -->
+      <div id="process" class="lg:col-span-4 glass-card rounded-3xl p-6 sm:p-7">
+        <h2 class="text-sm font-bold uppercase tracking-widest text-white mb-6">
+          ALUR PENGEMBANGAN SISTEM
+        </h2>
+
+        <div class="space-y-5 text-left">
+          
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#3A004D] border border-[#994887]/60 flex items-center justify-center shrink-0 text-[#b55a9f] font-mono font-bold text-xs">
+              01
+            </div>
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">ANALISIS KEBUTUHAN & DOKUMENTASI</h3>
+              <p class="text-zinc-300 text-[11px] leading-relaxed mt-0.5">Memahami spesifikasi fungsional, alur pengguna, dan struktur sistem yang akan dibangun.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#3A004D] border border-[#994887]/60 flex items-center justify-center shrink-0 text-[#b55a9f] font-mono font-bold text-xs">
+              02
+            </div>
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">DESAIN BASIS DATA & MVC</h3>
+              <p class="text-zinc-300 text-[11px] leading-relaxed mt-0.5">Merancang skema tabel MySQL relasional, normalisasi data, dan struktur Model-View-Controller.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#3A004D] border border-[#994887]/60 flex items-center justify-center shrink-0 text-[#b55a9f] font-mono font-bold text-xs">
+              03
+            </div>
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">KODING & FRONT-END SLICING</h3>
+              <p class="text-zinc-300 text-[11px] leading-relaxed mt-0.5">Membangun tampilan antarmuka responsif dengan HTML, CSS, JavaScript, serta logic PHP backend.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#3A004D] border border-[#994887]/60 flex items-center justify-center shrink-0 text-[#b55a9f] font-mono font-bold text-xs">
+              04
+            </div>
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">PENGUJIAN API & SQA</h3>
+              <p class="text-zinc-300 text-[11px] leading-relaxed mt-0.5">Testing operasi CRUD dan endpoint RESTful API menggunakan Postman untuk menjamin keandalan data.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#3A004D] border border-[#994887]/60 flex items-center justify-center shrink-0 text-[#b55a9f] font-mono font-bold text-xs">
+              05
+            </div>
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-white">KOLABORASI & EVALUASI</h3>
+              <p class="text-zinc-300 text-[11px] leading-relaxed mt-0.5">Bekerja sama dalam tim dengan Git/GitHub untuk tracking perubahan, penyelesaian kendala, dan review.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- COLUMN 3: SERTIFIKASI & KOMITMEN (3 Cols) -->
+      <div class="lg:col-span-3 flex flex-col justify-between rounded-3xl bg-[#3A004D] p-6 sm:p-7 relative overflow-hidden border border-[#994887]/40">
+        <div class="absolute -right-12 -top-12 w-44 h-44 bg-[#994887]/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div>
+          <span class="text-4xl text-[#b55a9f] font-serif block leading-none select-none">“</span>
+          <p class="text-white text-xs sm:text-sm font-medium leading-relaxed mt-1">
+            Berkomitmen menghasilkan perangkat lunak yang andal, kode terstruktur, dan antarmuka yang memberi solusi nyata bagi pengguna.
+          </p>
+          <div class="mt-4 pt-4 border-t border-[#994887]/30">
+            <p class="font-script text-2xl text-[#b55a9f]">Sheryn Febrylia</p>
+            <p class="text-[10px] uppercase tracking-wider text-zinc-300 mt-0.5">Teknik Informatika Polije</p>
+          </div>
+        </div>
+
+        <!-- SERTIFIKASI BLOCK (FROM CV) -->
+        <div class="mt-6 pt-4 border-t border-[#994887]/40 space-y-3">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#b55a9f] block">SERTIFIKASI:</span>
+          
+          <!-- EPT: klik kartu untuk membuka file sertifikat di Google Drive -->
+          <a
+            href="https://drive.google.com/file/d/1xFo50wjcCE__KGSeKEDCYkvnH5PAl57H/view?usp=drive_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Buka sertifikat English Proficiency Test (EPT) di Google Drive"
+            class="group block bg-[#22002e]/60 p-2.5 rounded-xl border border-[#994887]/30 hover:border-[#994887] hover:bg-[#22002e] transition-all duration-300"
+          >
+            <h5 class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">English Proficiency Test (EPT)</h5>
+            <p class="text-[10px] text-zinc-300">Kemendiktisaintek Polije • 2026</p>
+            <div class="flex items-center justify-between mt-0.5">
+              <span class="text-[9px] font-mono text-[#b55a9f]">Skor: 37/140 (Elementary)</span>
+              <span class="text-[9px] font-mono text-zinc-400 group-hover:text-white transition-colors">Lihat sertifikat ↗</span>
+            </div>
+          </a>
+
+          <!-- LKMM Pra-TD: klik kartu untuk membuka file sertifikat di Google Drive -->
+          <a
+            href="https://drive.google.com/file/d/1nuP6SzU5m2gD_B7oZLC0bvYVdR6yMGB-/view?usp=drive_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Buka sertifikat LKMM Pra-TD di Google Drive"
+            class="group block bg-[#22002e]/60 p-2.5 rounded-xl border border-[#994887]/30 hover:border-[#994887] hover:bg-[#22002e] transition-all duration-300"
+          >
+            <h5 class="text-xs font-bold text-white group-hover:text-[#b55a9f] transition-colors">LKMM Pra-TD</h5>
+            <p class="text-[10px] text-zinc-300">Kepemimpinan & Manajemen • 2025</p>
+            <div class="flex items-center justify-end mt-0.5">
+              <span class="text-[9px] font-mono text-zinc-400 group-hover:text-white transition-colors">Lihat sertifikat ↗</span>
+            </div>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER / LET'S WORK TOGETHER (FROM CV) ================= -->
+  <footer id="contact" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#3A004D]">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <!-- Left Pitch & Headline -->
+      <div class="lg:col-span-6 flex flex-col justify-center">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-[#b55a9f] text-sm">✦</span>
+          <span class="text-xs uppercase font-bold tracking-widest text-[#b55a9f]">TERBUKA UNTUK KERJA SAMA & MAGANG</span>
+        </div>
+        
+        <h2 class="font-display text-5xl sm:text-7xl font-black uppercase text-white leading-none tracking-tight">
+          LET'S CONNECT & WORK TOGETHER
+        </h2>
+        
+        <p class="text-zinc-300 text-xs sm:text-sm mt-4 max-w-md leading-relaxed">
+          Saya siap berkontribusi dalam proyek pengembangan website, aplikasi web, perancangan database, maupun kerja sama tim software engineering.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a 
+            href="https://wa.me/6285604424629" 
+            target="_blank"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#994887] hover:bg-[#b55a9f] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-[#3A004D]"
+          >
+            <span>💬 Chat via WhatsApp</span>
+          </a>
+          <button 
+            onclick="copyEmail()" 
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#3A004D] hover:bg-[#4a085e] border border-[#994887]/50 text-white text-xs font-bold uppercase tracking-wider transition-all"
+          >
+            <span>📋 Salin Email</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Contact Info List (Direct from CV) -->
+      <div class="lg:col-span-6 flex flex-col justify-center glass-card p-6 sm:p-8 rounded-3xl">
+        <h3 class="text-xs font-bold uppercase tracking-widest text-[#b55a9f] mb-6">INFORMASI KONTAK RESMI</h3>
+        
+        <div class="space-y-4">
+          
+          <!-- Email -->
+          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-[#3A004D]/40 border border-[#994887]/30 hover:border-[#994887] transition-colors">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-[#994887]/20 border border-[#994887]/40 flex items-center justify-center text-[#b55a9f] text-sm">✉</span>
+              <div>
+                <p class="text-[10px] uppercase font-bold text-zinc-400">EMAIL</p>
+                <a href="mailto:sherynhendrita02@gmail.com" class="text-xs sm:text-sm text-white font-medium hover:text-[#b55a9f] transition-colors">
+                  sherynhendrita02@gmail.com
+                </a>
+              </div>
+            </div>
+            <button onclick="copyEmail()" class="text-[10px] uppercase font-mono text-[#b55a9f] hover:underline cursor-pointer">
+              Salin
+            </button>
+          </div>
+
+          <!-- WhatsApp / Telp -->
+          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-[#3A004D]/40 border border-[#994887]/30 hover:border-[#994887] transition-colors">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-[#994887]/20 border border-[#994887]/40 flex items-center justify-center text-[#b55a9f] text-sm">📱</span>
+              <div>
+                <p class="text-[10px] uppercase font-bold text-zinc-400">WHATSAPP / TELEPON</p>
+                <a href="https://wa.me/6285604424629" target="_blank" class="text-xs sm:text-sm text-white font-medium hover:text-[#b55a9f] transition-colors">
+                  +62 856 0442 4629
+                </a>
+              </div>
+            </div>
+            <a href="https://wa.me/6285604424629" target="_blank" class="text-[10px] uppercase font-mono text-emerald-400 hover:underline">
+              Buka WA
+            </a>
+          </div>
+
+          <!-- Lokasi Asal & Kampus -->
+          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-[#3A004D]/40 border border-[#994887]/30">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-[#994887]/20 border border-[#994887]/40 flex items-center justify-center text-[#b55a9f] text-sm">📍</span>
+              <div>
+                <p class="text-[10px] uppercase font-bold text-zinc-400">LOKASI & DOMISILI</p>
+                <p class="text-xs sm:text-sm text-white font-medium">Nganjuk, Jawa Timur, Indonesia</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-[#3A004D] flex items-center justify-between text-[11px] text-zinc-400">
+          <span>Politeknik Negeri Jember</span>
+          <span class="text-zinc-500 font-mono">© 2026 Sheryn Febrylia Hendrita</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- ============ LIVE INTERACTIVE WEBSITE MODAL (BROWSER SIMULATOR) =========== -->
+  <!-- ========================================================================= -->
+  <div id="website-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto">
+    <div class="relative w-full max-w-5xl bg-[#1a0024] border-2 border-[#994887] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] modal-enter">
+      
+      <!-- BROWSER TOP BAR (Chrome / macOS Window Controls) -->
+      <div class="bg-[#2d003b] border-b border-[#3A004D] px-4 py-3 flex items-center justify-between gap-4 select-none">
+        
+        <!-- Window Traffic Light Buttons -->
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="closeWebsiteModal()" title="Tutup" class="w-3.5 h-3.5 rounded-full bg-rose-500 hover:opacity-80 transition-opacity"></button>
+          <div class="w-3.5 h-3.5 rounded-full bg-amber-500 opacity-60"></div>
+          <div class="w-3.5 h-3.5 rounded-full bg-emerald-500 opacity-60"></div>
+        </div>
+
+        <!-- Simulated Active URL Bar -->
+        <div class="flex-1 max-w-xl mx-auto flex items-center gap-2 bg-[#16001e] border border-[#994887]/40 rounded-full px-4 py-1.5 text-xs">
+          <span class="text-emerald-400 text-xs">🔒</span>
+          <span id="modal-url-display" class="font-mono text-zinc-300 truncate">https://paktobarber.sheryn.dev</span>
+          <span class="text-[10px] text-zinc-500 ml-auto hidden sm:inline">200 OK</span>
+        </div>
+
+        <!-- Viewport & Close Actions -->
+        <div class="flex items-center gap-2 shrink-0">
+          <button 
+            onclick="reloadActiveWebsite()" 
+            title="Reload Halaman"
+            class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-[#3A004D] transition-colors"
+          >
+            ↻
+          </button>
+          <button 
+            onclick="closeWebsiteModal()" 
+            class="px-3 py-1 rounded-full bg-[#994887] hover:bg-[#b55a9f] text-white text-xs font-bold transition-all"
+          >
+            Tutup [✕]
+          </button>
+        </div>
+      </div>
+
+      <!-- BROWSER SUB-HEADER: Project Info & Mode -->
+      <div class="bg-[#240030] px-4 py-2 border-b border-[#3A004D] flex items-center justify-between text-xs text-zinc-300">
+        <div class="flex items-center gap-2">
+          <span id="modal-project-badge" class="px-2 py-0.5 rounded bg-[#994887] text-white font-bold text-[10px] uppercase">FRONT-END</span>
+          <span id="modal-project-title" class="font-bold text-white">Pak To Barber Website</span>
+        </div>
+        <span class="text-[11px] text-zinc-400 hidden sm:inline">✨ Website interaktif dapat diklik & dicoba langsung</span>
+      </div>
+
+      <!-- BROWSER VIEWPORT (The Live Simulated Website Content) -->
+      <div id="modal-viewport-container" class="flex-1 overflow-y-auto bg-zinc-950 p-0 text-white min-h-[460px]">
+        <!-- Content will be injected dynamically via JS based on selected project -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= CONTACT FORM MODAL ================= -->
+  <div id="contact-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm items-center justify-center p-4">
+    <div class="relative w-full max-w-lg bg-[#22002e] border border-[#994887] rounded-3xl p-6 sm:p-8 shadow-2xl modal-enter">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-bold uppercase tracking-wider text-white">Hubungi Sheryn</h3>
+        <button onclick="closeContactModal()" class="w-8 h-8 rounded-full bg-[#3A004D] flex items-center justify-center text-zinc-400 hover:text-white">✕</button>
+      </div>
+      
+      <p class="text-xs text-zinc-300 mb-6">
+        Silakan tinggalkan pesan untuk kebutuhan proyek website, kerja sama, atau tawaran magang.
+      </p>
+
+      <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-[11px] uppercase tracking-wider text-zinc-400 mb-1 font-semibold">Nama Lengkap</label>
+          <input required type="text" placeholder="Masukkan nama Anda" class="w-full px-4 py-2.5 rounded-xl bg-[#16001e] border border-[#3A004D] focus:border-[#994887] outline-none text-white text-xs">
+        </div>
+
+        <div>
+          <label class="block text-[11px] uppercase tracking-wider text-zinc-400 mb-1 font-semibold">Email / WhatsApp</label>
+          <input required type="text" placeholder="kontak@perusahaan.com / 0812..." class="w-full px-4 py-2.5 rounded-xl bg-[#16001e] border border-[#3A004D] focus:border-[#994887] outline-none text-white text-xs">
+        </div>
+
+        <div>
+          <label class="block text-[11px] uppercase tracking-wider text-zinc-400 mb-1 font-semibold">Pesan / Detail Proyek</label>
+          <textarea required rows="4" placeholder="Ceritakan kebutuhan atau penawaran kerja sama..." class="w-full px-4 py-2.5 rounded-xl bg-[#16001e] border border-[#3A004D] focus:border-[#994887] outline-none text-white text-xs"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-full bg-[#994887] hover:bg-[#b55a9f] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-[#3A004D]">
+          Kirim Pesan Sekarang ⟶
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#3A004D] border border-[#994887] text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-xs">
+    <span class="text-emerald-400 font-bold">✓</span>
+    <span id="toast-text">Pesan berhasil disalin!</span>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // TOAST HELPER
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      toastText.innerText = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3200);
+    }
+
+    function copyEmail() {
+      navigator.clipboard.writeText('sherynhendrita02@gmail.com');
+      showToast('Email sherynhendrita02@gmail.com berhasil disalin!');
+    }
+
+    // CONTACT MODAL
+    function openContactModal() {
+      const m = document.getElementById('contact-modal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+    function closeContactModal() {
+      const m = document.getElementById('contact-modal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      closeContactModal();
+      showToast('Pesan berhasil terkirim! Sheryn akan segera menghubungi Anda.');
+    }
+
+    // ==========================================================
+    // ============ LIVE WEBSITE MODAL BUILDER SYSTEM ============
+    // ==========================================================
+    let currentActiveProjectKey = 'paktobarber';
+
+    function openWebsiteModal(projectKey) {
+      currentActiveProjectKey = projectKey;
+      const modal = document.getElementById('website-modal');
+      const urlDisplay = document.getElementById('modal-url-display');
+      const titleDisplay = document.getElementById('modal-project-title');
+      const badgeDisplay = document.getElementById('modal-project-badge');
+      const viewport = document.getElementById('modal-viewport-container');
+
+      if (projectKey === 'paktobarber') {
+        urlDisplay.innerText = 'https://paktobarber.sheryn.dev';
+        titleDisplay.innerText = 'Pak To Barber — Modern Barbershop Website';
+        badgeDisplay.innerText = 'FRONT-END DEV (SEP - DES 2025)';
+        viewport.innerHTML = renderPakToBarberWebsite();
+      } else if (projectKey === 'exoticgaming') {
+        urlDisplay.innerText = 'https://exoticgaming.sheryn.dev';
+        titleDisplay.innerText = 'Exotic Gaming & Cafe — Billing & Lounge System';
+        badgeDisplay.innerText = 'SOFTWARE ENGINEER (JAN - APR 2026)';
+        viewport.innerHTML = renderExoticGamingWebsite();
+      } else if (projectKey === 'apimahasiswa') {
+        urlDisplay.innerText = 'https://api-tif.polije.ac.id/v1/students';
+        titleDisplay.innerText = 'Sistem Informasi & RESTful API TIF Polije';
+        badgeDisplay.innerText = 'REST API & DATABASE (POLIJE)';
+        viewport.innerHTML = renderApiTifWebsite();
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWebsiteModal() {
+      const modal = document.getElementById('website-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = 'auto';
+    }
+
+    function reloadActiveWebsite() {
+      showToast('Memuat ulang website...');
+      setTimeout(() => {
+        openWebsiteModal(currentActiveProjectKey);
+      }, 300);
+    }
+
+    // Close on Escape Key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeWebsiteModal();
+        closeContactModal();
+      }
+    });
+
+    // ----------------------------------------------------------
+    // 1. TEMPLATE: LIVE WEBSITE PAK TO BARBER
+    // ----------------------------------------------------------
+    function renderPakToBarberWebsite() {
+      return `
+        <div class="bg-zinc-900 text-zinc-100 min-h-full font-sans pb-12">
+          <!-- Web Navbar -->
+          <nav class="bg-zinc-950 border-b border-zinc-800 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+            <div class="flex items-center gap-2">
+              <img src="pak-to-logo.png" alt="Logo Potong Rambut Pak To" class="w-9 h-9 rounded-full object-cover">
+              <div>
+                <span class="font-extrabold text-amber-500 tracking-wider text-base block leading-none">PAK TO BARBER</span>
+                <span class="text-[9px] text-zinc-400 font-mono tracking-widest uppercase">GENTLEMEN'S GROOMING</span>
+              </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-6 text-xs text-zinc-300">
+              <a href="#pakto-layanan" class="hover:text-amber-500 transition-colors">Layanan</a>
+              <a href="#pakto-harga" class="hover:text-amber-500 transition-colors">Daftar Harga</a>
+              <a href="#pakto-booking" class="hover:text-amber-500 transition-colors">Booking Cukur</a>
+            </div>
+            <button onclick="document.getElementById('pakto-booking').scrollIntoView({behavior:'smooth'})" class="px-3.5 py-1.5 rounded-full bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider transition-all">
+              Book Sekarang
+            </button>
+          </nav>
+
+          <!-- Web Hero Banner -->
+          <div class="relative bg-gradient-to-r from-zinc-950 via-zinc-900 to-amber-950/40 px-6 py-12 border-b border-zinc-800 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="max-w-lg">
+              <span class="inline-block px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 font-mono text-[10px] font-bold uppercase mb-2">
+                SENIN - MINGGU: 09:00 - 21:00 WIB
+              </span>
+              <h1 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
+                Gaya Rambut Maskulin, Rapi & Percaya Diri
+              </h1>
+              <p class="text-xs text-zinc-300 mt-2 leading-relaxed">
+                Potongan presisi oleh capster berpengalaman dengan perlengkapan higienis, handuk hangat, dan pomade premium.
+              </p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="text-[10px] bg-zinc-800 px-2 py-1 rounded text-zinc-300 font-medium">✓ Free Hair Tonic</span>
+                <span class="text-[10px] bg-zinc-800 px-2 py-1 rounded text-zinc-300 font-medium">✓ Ruangan AC Dingin</span>
+                <span class="text-[10px] bg-zinc-800 px-2 py-1 rounded text-zinc-300 font-medium">✓ Free WiFi & Kopi</span>
+              </div>
+            </div>
+            <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col items-center justify-center text-amber-400 p-4 shrink-0 shadow-lg">
+              <span class="text-4xl mb-1">✂️</span>
+              <span class="text-xs font-bold uppercase tracking-wider">Premium Cut</span>
+              <span class="text-[11px] text-zinc-400 mt-1">Rp 35.000</span>
+            </div>
+          </div>
+
+          <!-- Services Grid -->
+          <div id="pakto-layanan" class="max-w-4xl mx-auto px-6 py-8">
+            <div class="text-center mb-6">
+              <h3 class="text-lg font-bold text-white uppercase tracking-wider">Pilihan Layanan Cukur</h3>
+              <p class="text-xs text-zinc-400">Pilih servis terbaik sesuai gaya yang Anda inginkan</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <!-- Item 1 -->
+              <div class="p-4 rounded-xl bg-zinc-950 border border-zinc-800 hover:border-amber-500/60 transition-all">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-lg">💈</span>
+                  <span class="font-bold text-amber-400 text-sm">Rp 35.000</span>
+                </div>
+                <h4 class="font-bold text-white text-xs uppercase">Gentlemen Haircut</h4>
+                <p class="text-[11px] text-zinc-400 mt-1">Potong rambut rapi + cuci + pijat kepala rileks + styling pomade.</p>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="p-4 rounded-xl bg-zinc-950 border border-zinc-800 hover:border-amber-500/60 transition-all">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-lg">🪒</span>
+                  <span class="font-bold text-amber-400 text-sm">Rp 20.000</span>
+                </div>
+                <h4 class="font-bold text-white text-xs uppercase">Beard & Mustache Trim</h4>
+                <p class="text-[11px] text-zinc-400 mt-1">Cukur kumis & jenggot dengan razor steril, foam hangat, dan aftershave.</p>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="p-4 rounded-xl bg-zinc-950 border border-zinc-800 hover:border-amber-500/60 transition-all">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-lg">✨</span>
+                  <span class="font-bold text-amber-400 text-sm">Rp 50.000</span>
+                </div>
+                <h4 class="font-bold text-white text-xs uppercase">Pak To Royal Package</h4>
+                <p class="text-[11px] text-zinc-400 mt-1">Haircut komplit + Facial Wash Scrub + Pijat Bahu + Black Mask Masker.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Booking Form -->
+          <div id="pakto-booking" class="max-w-xl mx-auto px-6 py-6 bg-zinc-950 rounded-2xl border border-zinc-800 shadow-xl my-4">
+            <h4 class="font-bold text-sm text-white uppercase tracking-wider mb-1 flex items-center gap-2">
+              <span>📅</span> Formulir Reservasi Online
+            </h4>
+            <p class="text-[11px] text-zinc-400 mb-4">Coba isi form ini untuk menguji fungsionalitas booking!</p>
+            
+            <form onsubmit="handlePakToBooking(event)" class="space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[10px] text-zinc-400 uppercase font-semibold mb-1">Nama Pemesan</label>
+                  <input required id="pakto-name" type="text" placeholder="Contoh: Budi Santoso" class="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-white outline-none focus:border-amber-500">
+                </div>
+                <div>
+                  <label class="block text-[10px] text-zinc-400 uppercase font-semibold mb-1">No. WhatsApp</label>
+                  <input required id="pakto-phone" type="text" placeholder="08123456789" class="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-white outline-none focus:border-amber-500">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[10px] text-zinc-400 uppercase font-semibold mb-1">Pilihan Layanan</label>
+                  <select id="pakto-service" class="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-white outline-none focus:border-amber-500">
+                    <option>Gentlemen Haircut (Rp 35.000)</option>
+                    <option>Beard & Mustache Trim (Rp 20.000)</option>
+                    <option>Pak To Royal Package (Rp 50.000)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-zinc-400 uppercase font-semibold mb-1">Jam Kedatangan</label>
+                  <select id="pakto-time" class="w-full px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-white outline-none focus:border-amber-500">
+                    <option>10:00 WIB</option>
+                    <option>13:30 WIB</option>
+                    <option>16:00 WIB</option>
+                    <option>19:00 WIB</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="w-full py-2.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md">
+                Konfirmasi Jadwal Cukur ⟶
+              </button>
+            </form>
+
+            <div id="pakto-success-alert" class="hidden mt-3 p-3 rounded-lg bg-emerald-950 border border-emerald-500 text-emerald-200 text-xs">
+              🎉 <strong>Reservasi Berhasil!</strong> Jadwal Anda telah tercatat di sistem Pak To Barber.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function handlePakToBooking(e) {
+      e.preventDefault();
+      const alert = document.getElementById('pakto-success-alert');
+      alert.classList.remove('hidden');
+      showToast('Booking Pak To Barber Berhasil Terkonfirmasi!');
+    }
+
+    // ----------------------------------------------------------
+    // 2. TEMPLATE: LIVE WEBSITE EXOTIC GAMING & CAFE
+    // ----------------------------------------------------------
+    function renderExoticGamingWebsite() {
+      return `
+        <div class="bg-zinc-950 text-zinc-100 min-h-full font-sans pb-12">
+          <!-- Web Navbar -->
+          <nav class="bg-zinc-900 border-b border-purple-900/40 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+            <div class="flex items-center gap-2">
+              <img src="exotic-logo.png" alt="Logo Exotic Gaming & Cafe" class="w-9 h-9 rounded-full object-cover">
+              <div>
+                <span class="font-extrabold text-purple-400 tracking-wider text-base block leading-none">EXOTIC GAMING & CAFE</span>
+                <span class="text-[9px] text-zinc-400 font-mono tracking-widest uppercase">ESPORTS ARENA & COZY LOUNGE</span>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <div class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500 text-emerald-300 text-[11px] font-mono">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>38 / 50 PC ONLINE</span>
+              </div>
+              <span id="exotic-cart-count" class="px-2.5 py-1 rounded-full bg-purple-600 text-white text-[11px] font-bold">
+                🛒 0 Item
+              </span>
+            </div>
+          </nav>
+
+          <!-- Gaming Hero -->
+          <div class="bg-gradient-to-b from-purple-950/40 to-zinc-950 px-6 py-8 border-b border-zinc-800 text-center">
+            <span class="px-3 py-1 rounded-full bg-purple-900/60 text-purple-300 font-mono text-[10px] font-bold uppercase border border-purple-700/50">
+              HIGH SPEC GAMING RIGS • RTX 40 SERIES • 240HZ MONITOR
+            </span>
+            <h2 class="text-xl sm:text-3xl font-black text-white mt-3 uppercase tracking-wide">
+              Pusat Gaming Kompetitif & Santap Cafe
+            </h2>
+            <p class="text-xs text-zinc-400 mt-1 max-w-md mx-auto">
+              Sistem billing modern, kursi ergonomis gaming, koneksi fiber optik gigabit low latency, dan cafe menu lezat siap antar ke meja Anda.
+            </p>
+          </div>
+
+          <!-- Interactive PC & Cafe Order Tabs -->
+          <div class="max-w-4xl mx-auto px-6 py-6">
+            
+            <!-- Cafe Order Menu -->
+            <div class="mb-8">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                  <span>🍔</span> Menu Makanan & Minuman Cafe
+                </h3>
+                <span class="text-xs text-zinc-400">Pesan langsung dari PC</span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                
+                <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between">
+                  <div>
+                    <div class="flex justify-between items-start">
+                      <h4 class="font-bold text-white text-xs">Indomie Internet Jumbo</h4>
+                      <span class="text-xs font-mono font-bold text-purple-400">Rp 15.000</span>
+                    </div>
+                    <p class="text-[10px] text-zinc-400 mt-1">Indomie telor kornet + keju tabur + cabe rawit.</p>
+                  </div>
+                  <button onclick="addExoticOrder('Indomie Internet', 15000)" class="mt-3 w-full py-1.5 rounded-lg bg-purple-700 hover:bg-purple-600 text-white font-bold text-[11px] transition-colors">
+                    + Pesan Menu
+                  </button>
+                </div>
+
+                <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between">
+                  <div>
+                    <div class="flex justify-between items-start">
+                      <h4 class="font-bold text-white text-xs">Kopi Susu Gula Aren</h4>
+                      <span class="text-xs font-mono font-bold text-purple-400">Rp 12.000</span>
+                    </div>
+                    <p class="text-[10px] text-zinc-400 mt-1">Espresso blend robusta arabika susu creamy.</p>
+                  </div>
+                  <button onclick="addExoticOrder('Kopi Susu Aren', 12000)" class="mt-3 w-full py-1.5 rounded-lg bg-purple-700 hover:bg-purple-600 text-white font-bold text-[11px] transition-colors">
+                    + Pesan Menu
+                  </button>
+                </div>
+
+                <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between">
+                  <div>
+                    <div class="flex justify-between items-start">
+                      <h4 class="font-bold text-white text-xs">French Fries & Sosis</h4>
+                      <span class="text-xs font-mono font-bold text-purple-400">Rp 14.000</span>
+                    </div>
+                    <p class="text-[10px] text-zinc-400 mt-1">Kentang goreng crispy dengan saus keju & sambal.</p>
+                  </div>
+                  <button onclick="addExoticOrder('French Fries & Sosis', 14000)" class="mt-3 w-full py-1.5 rounded-lg bg-purple-700 hover:bg-purple-600 text-white font-bold text-[11px] transition-colors">
+                    + Pesan Menu
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Billing Calculator Simulation -->
+            <div class="p-5 rounded-2xl bg-zinc-900 border border-purple-900/50">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-white uppercase tracking-wider">⚡ Simulasi Sewa Billing PC</span>
+                <span id="exotic-total-display" class="font-mono text-xs font-bold text-emerald-400">Total: Rp 0</span>
+              </div>
+              
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="addExoticOrder('Billing Paket 2 Jam', 10000)" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-200">
+                  + Paket 2 Jam (Rp 10.000)
+                </button>
+                <button onclick="addExoticOrder('Billing Paket 5 Jam (VIP)', 22000)" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-200">
+                  + Paket 5 Jam VIP (Rp 22.000)
+                </button>
+                <button onclick="resetExoticOrders()" class="px-3 py-1.5 rounded-lg bg-rose-950 border border-rose-800 text-rose-300 text-xs hover:bg-rose-900">
+                  Reset Pesanan
+                </button>
+              </div>
+
+              <div id="exotic-order-log" class="mt-3 p-3 rounded-lg bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 font-mono">
+                Belum ada pesanan aktif. Silakan pilih menu cafe atau billing di atas.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    let exoticTotal = 0;
+    let exoticItems = [];
+
+    function addExoticOrder(name, price) {
+      exoticTotal += price;
+      exoticItems.push(name);
+      
+      const cartCount = document.getElementById('exotic-cart-count');
+      const totalDisplay = document.getElementById('exotic-total-display');
+      const orderLog = document.getElementById('exotic-order-log');
+      
+      cartCount.innerText = `🛒 ${exoticItems.length} Item`;
+      totalDisplay.innerText = `Total: Rp ${exoticTotal.toLocaleString('id-ID')}`;
+      orderLog.innerHTML = `<span class="text-emerald-400">✓ Ditambahkan:</span> ${name} (${price.toLocaleString('id-ID')})<br><span class="text-zinc-500">Daftar item:</span> ${exoticItems.join(', ')}`;
+      showToast(`Berhasil menambah ${name} ke sistem Exotic Gaming!`);
+    }
+
+    function resetExoticOrders() {
+      exoticTotal = 0;
+      exoticItems = [];
+      document.getElementById('exotic-cart-count').innerText = `🛒 0 Item`;
+      document.getElementById('exotic-total-display').innerText = `Total: Rp 0`;
+      document.getElementById('exotic-order-log').innerText = `Pesanan direset. Belum ada pesanan aktif.`;
+    }
+
+    // ----------------------------------------------------------
+    // 3. TEMPLATE: LIVE SISTEM INFORMASI & RESTful API TIF POLIJE
+    // ----------------------------------------------------------
+    function renderApiTifWebsite() {
+      return `
+        <div class="bg-zinc-950 text-zinc-100 min-h-full font-mono text-xs pb-12">
+          <!-- Web Navbar -->
+          <nav class="bg-zinc-900 border-b border-zinc-800 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">⚡</span>
+              <div>
+                <span class="font-bold text-white text-xs block">POLIJE TIF API SERVICES</span>
+                <span class="text-[9px] text-zinc-400">RESTful API • Postman Tested • MVC</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500 text-emerald-400 text-[10px] font-bold">
+                API ONLINE 200 OK
+              </span>
+            </div>
+          </nav>
+
+          <!-- API Test Console Simulation -->
+          <div class="max-w-4xl mx-auto px-6 py-6">
+            
+            <div class="mb-4">
+              <h3 class="text-sm font-bold text-white font-sans uppercase tracking-wider mb-1">
+                Postman RESTful API Interactive Inspector
+              </h3>
+              <p class="text-[11px] text-zinc-400 font-sans">
+                Uji coba interaktif endpoint API pengelolaan data mahasiswa Teknik Informatika Politeknik Negeri Jember.
+              </p>
+            </div>
+
+            <!-- API Request Bar -->
+            <div class="bg-zinc-900 p-2 rounded-xl border border-zinc-800 flex flex-col sm:flex-row items-center gap-2 mb-4">
+              <div class="flex items-center gap-1.5 w-full sm:w-auto">
+                <span class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold text-[10px]">GET</span>
+                <span class="text-zinc-400 text-xs">/api/v1/students</span>
+              </div>
+              <input type="text" readonly value="https://api-tif.polije.ac.id/v1/students" class="flex-1 bg-zinc-950 px-3 py-1.5 rounded-lg border border-zinc-800 text-zinc-300 text-[11px] w-full">
+              <button onclick="triggerApiRequest()" class="w-full sm:w-auto px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors shrink-0">
+                Send Request ⟶
+              </button>
+            </div>
+
+            <!-- Response Window -->
+            <div class="bg-zinc-900 rounded-xl border border-zinc-800 overflow-hidden shadow-lg">
+              <div class="bg-zinc-950 px-4 py-2 border-b border-zinc-800 flex items-center justify-between text-[10px] text-zinc-400">
+                <div class="flex items-center gap-3">
+                  <span class="text-emerald-400 font-bold">Status: 200 OK</span>
+                  <span>Time: 42 ms</span>
+                  <span>Size: 1.2 KB</span>
+                </div>
+                <span>JSON Response Format</span>
+              </div>
+              
+              <pre id="api-response-code" class="p-4 text-[11px] text-emerald-300 overflow-x-auto leading-relaxed max-h-72">
+{
+  "status": "success",
+  "code": 200,
+  "institution": "Politeknik Negeri Jember",
+  "program": "Teknik Informatika",
+  "data": [
+    {
+      "id": 1,
+      "name": "Sheryn Febrylia Hendrita",
+      "prodi": "Teknik Informatika",
+      "semester": 3,
+      "gpa": 3.75,
+      "skills": ["PHP", "MySQL", "HTML/CSS", "Java", "Postman", "REST API"],
+      "status": "Active"
+    },
+    {
+      "id": 2,
+      "name": "Budi Pratama",
+      "prodi": "Teknik Informatika",
+      "semester": 3,
+      "gpa": 3.65,
+      "status": "Active"
+    }
+  ]
+}
+              </pre>
+            </div>
+
+            <!-- Interactive CRUD Operation Buttons -->
+            <div class="mt-6 p-4 rounded-xl bg-zinc-900 border border-zinc-800">
+              <h4 class="font-sans font-bold text-xs text-white uppercase tracking-wider mb-2">Simulasi Operasi CRUD Database:</h4>
+              <div class="flex flex-wrap gap-2 font-sans">
+                <button onclick="simulateCrud('POST')" class="px-3 py-1.5 rounded-lg bg-emerald-950 border border-emerald-600 text-emerald-300 text-xs hover:bg-emerald-900">
+                  + POST (Tambah Mahasiswa)
+                </button>
+                <button onclick="simulateCrud('PUT')" class="px-3 py-1.5 rounded-lg bg-amber-950 border border-amber-600 text-amber-300 text-xs hover:bg-amber-900">
+                  ✏️ PUT (Update Data Nilai)
+                </button>
+                <button onclick="simulateCrud('DELETE')" class="px-3 py-1.5 rounded-lg bg-rose-950 border border-rose-600 text-rose-300 text-xs hover:bg-rose-900">
+                  🗑️ DELETE (Hapus Record)
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    function triggerApiRequest() {
+      showToast('Mengirim HTTP GET Request ke API Server Polije...');
+    }
+
+    function simulateCrud(method) {
+      const resp = document.getElementById('api-response-code');
+      if (method === 'POST') {
+        resp.innerHTML = JSON.stringify({
+          status: "success",
+          code: 201,
+          message: "Data Mahasiswa Baru Berhasil Ditambahkan ke Database MySQL!",
+          timestamp: new Date().toISOString()
+        }, null, 2);
+        showToast('POST 201 Created: Data tersimpan di database MySQL!');
+      } else if (method === 'PUT') {
+        resp.innerHTML = JSON.stringify({
+          status: "success",
+          code: 200,
+          message: "Record Mahasiswa Berhasil Diperbarui via RESTful API!",
+          timestamp: new Date().toISOString()
+        }, null, 2);
+        showToast('PUT 200 OK: Data berhasil diupdate!');
+      } else if (method === 'DELETE') {
+        resp.innerHTML = JSON.stringify({
+          status: "success",
+          code: 200,
+          message: "Record Mahasiswa Berhasil Dihapus (Soft Delete CRUD)!",
+          timestamp: new Date().toISOString()
+        }, null, 2);
+        showToast('DELETE 200 OK: Data berhasil dihapus!');
+      }
+    }
+  </script>
+</body>
+</html>
